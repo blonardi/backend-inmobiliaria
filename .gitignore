@@ -1,0 +1,19 @@
+# Dependencias
+/node_modules
+
+# Logs y archivos temporales
+npm-debug.log
+yarn-error.log
+yarn-debug.log*
+yarn.lock
+
+# Construcción de directorios
+/build
+/coverage
+
+# Configuraciones locales
+.env
+
+# Otros archivos generados
+.DS_Store
+*.log
