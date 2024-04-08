@@ -80,8 +80,9 @@ houseRouter.get('/', async (req, res) => {
   try {
     const houses = await HouseModel.find({}).sort({ date: -1 })
     res.status(200).json(houses)
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+		res.status(500).json({message: error.message})
+    console.log(error)
   }
 })
 // ReadByName
@@ -103,6 +104,7 @@ houseRouter.get('/:permalink', async (req, res, next) => {
     next(err)
   }
 })
+
 // Get cities to select.
 // houseRouter.get('/cities', async (req, res) => {
 //  try {
@@ -123,8 +125,11 @@ houseRouter.post('/', async (req, res) => {
     const houseToSave = { ...req.body, date, permalink }
     const createdPost = await HouseModel.create(houseToSave)
     res.status(201).send(createdPost)
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+		res.status(400).json({
+			message: error.message
+		})
+    console.log(error)
   }
 })
 
