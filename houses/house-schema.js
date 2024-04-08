@@ -72,7 +72,8 @@ export const postSchema = mongoose.Schema({
 export const houseSchema = mongoose.Schema({
   permalink: {
     type: String,
-    required: true
+    required: true,
+		unique: true,
   },
   price: {
     type: Number,

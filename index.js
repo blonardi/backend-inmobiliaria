@@ -8,6 +8,7 @@ import { handleErrors } from './middlewares/handleErrors.js'
 dotenv.config()
 
 const { MONGO_PORT, MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME } = process.env
+const PORT = process.env.PORT || MONGO_PORT
 const MONGO_URI = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/?retryWrites=true&w=majority`
 
 const app = express()
@@ -32,8 +33,8 @@ app.use(notFound)
 
 app.use(handleErrors)
 
-app.listen(MONGO_PORT, () => {
-  console.log(`Server running on port: ${MONGO_PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server running on port: ${PORT}`)
   mongoose.connect(MONGO_URI, {
     dbName: 'inmobiliariasdb'
   }).then(() => console.log('Conexión exitosa a MongoDB'))
