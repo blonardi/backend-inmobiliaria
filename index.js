@@ -10,7 +10,7 @@ dotenv.config()
 
 const { MONGO_PORT, MONGO_URL, MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
 const PORT = process.env.PORT || MONGO_PORT
-
+MONGO_URL=`mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/?retryWrites=true&w=majority`
 
 const app = express()
 app.use(cors())
