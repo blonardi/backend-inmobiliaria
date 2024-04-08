@@ -8,9 +8,10 @@ import { notFound } from './middlewares/notFound.js'
 import { handleErrors } from './middlewares/handleErrors.js'
 dotenv.config()
 
-const { MONGO_PORT, MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
-const PORT = process.env.PORT || MONGO_PORT
-const MONGO_URL=`mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/?retryWrites=true&w=majority`
+const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
+const PORT = process.env.PORT || 3001
+const MONGO_URI=`mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/${MONGO_DATABASE}?retryWrites=true&w=majority`
+
 
 const app = express()
 app.use(cors())
@@ -37,7 +38,7 @@ app.use(handleErrors)
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`)
-  mongoose.connect(MONGO_URL, {
+  mongoose.connect(MONGO_URI, {
     dbName: MONGO_DATABASE
   }).then(() => console.log('Conexión exitosa a MongoDB'))
     .catch(error => console.error('Error al conectar a MongoDB:', error))
