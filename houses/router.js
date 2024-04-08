@@ -76,15 +76,28 @@ houseRouter.get('/locations', async (req, res) => {
 })
 
 // Read
+//houseRouter.get('/', async (req, res) => {
+//  try {
+//    const houses = await HouseModel.find({}).sort({ date: -1 })
+//    res.status(200).json(houses)
+//  } catch (error) {
+//		res.status(500).json({message: error.message})
+//    console.log(error)
+//  }
+//})
 houseRouter.get('/', async (req, res) => {
-  try {
-    const houses = await HouseModel.find({}).sort({ date: -1 })
-    res.status(200).json(houses)
-  } catch (error) {
-		res.status(500).json({message: error.message})
-    console.log(error)
-  }
+	try {
+		const houses = await HouseModel.find();
+		console.log('GET ALL', houses)
+		if (houses.length === 0) {
+				return res.status(204).json([])
+		}
+		res.json(houses)
+	} catch (error) {
+		res.status(500).json({ message: error.message })
+	}
 })
+
 // ReadByName
 houseRouter.get('/name', async (req, res) => {
   try {
