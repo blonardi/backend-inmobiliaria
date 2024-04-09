@@ -87,7 +87,7 @@ houseRouter.get('/locations', async (req, res) => {
 //})
 houseRouter.get('/', async (req, res) => {
 	try {
-		const houses = await HouseModel.find();
+		const houses = await HouseModel.find({}).sort({ date: -1 });
 		console.log('GET ALL', houses)
 		if (houses.length === 0) {
 				return res.status(204).json([])
