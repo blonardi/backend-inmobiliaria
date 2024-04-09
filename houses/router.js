@@ -58,6 +58,7 @@ houseRouter.get('/realestates', async (req, res) => {
     res.status(500).send('Error en el servidor')
   }
 })
+
 // Read Locationes
 houseRouter.get('/locations', async (req, res) => {
   try {

@@ -10,7 +10,7 @@ dotenv.config()
 
 const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
 const PORT = process.env.PORT || 10000
-const MONGODB_URI= `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/?retryWrites=true&w=majority&appName=Cluster0`
+const MONGODB_URI= `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/inmobiliariasdb?retryWrites=true&w=majority&appName=Cluster0`
 
 
 
