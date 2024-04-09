@@ -8,9 +8,9 @@ import { notFound } from './middlewares/notFound.js'
 import { handleErrors } from './middlewares/handleErrors.js'
 dotenv.config()
 
-const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
+const {MONGODB_URI, MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
 const PORT = process.env.PORT || 10000
-const MONGODB_URI= `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/inmobiliariasdb?retryWrites=true&w=majority&appName=Cluster0`
+//const MONGODB_URI= `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/inmobiliariasdb?retryWrites=true&w=majority&appName=Cluster0`
 
 
 
@@ -40,9 +40,7 @@ app.use(handleErrors)
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`)
-  mongoose.connect(MONGODB_URI, {
-		dbName: MONGO_DATABASE
-	})
+  mongoose.connect(MONGODB_URI)
 		.then(() => console.log('Conexión exitosa a MongoDB'))
     .catch(error => console.error('Error al conectar a MongoDB:', error))
 })
