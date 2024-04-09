@@ -39,8 +39,7 @@ app.use(handleErrors)
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`)
-  mongoose.connect(MONGO_URI, {
-    dbName: MONGO_DATABASE
-  }).then(() => console.log('Conexión exitosa a MongoDB'))
+  mongoose.connect(MONGO_URI)
+		.then(() => console.log('Conexión exitosa a MongoDB'))
     .catch(error => console.error('Error al conectar a MongoDB:', error))
 })
