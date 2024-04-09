@@ -9,7 +9,7 @@ import { handleErrors } from './middlewares/handleErrors.js'
 dotenv.config()
 
 const {MONGODB_URI, MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
-const PORT = process.env.PORT || 10000
+const PORT = process.env.PORT
 //const MONGODB_URI= `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/inmobiliariasdb?retryWrites=true&w=majority&appName=Cluster0`
 
 
