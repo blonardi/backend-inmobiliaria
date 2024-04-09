@@ -10,7 +10,8 @@ dotenv.config()
 
 const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_DATABASE } = process.env
 const PORT = process.env.PORT || 3001
-const MONGO_URI= `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/?retryWrites=true&w=majority&appName=Cluster0`
+const MONGO_URI= `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}/${MONGO_DATABASE}?retryWrites=true&w=majority&appName=Cluster0`
+
 
 
 const app = express()
