@@ -17,3 +17,5 @@ yarn.lock
 # Otros archivos generados
 .DS_Store
 *.log
+
+mongo/
