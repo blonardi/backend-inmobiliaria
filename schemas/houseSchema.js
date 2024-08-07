@@ -1,45 +1,5 @@
 import mongoose from 'mongoose'
 
-// export const houseSchema = mongoose.Schema({
-
-//   price: {
-//     type: Number,
-//     required: true
-//   },
-//   name: {
-//     type: String,
-//     required: true
-//   },
-//   address: {
-//     type: String,
-//     required: true
-//   },
-//   description: {
-//     type: String,
-//     required: true
-//   },
-//   listing_url: {
-//     type: String,
-//     required: true
-//   }
-//   // dimention: {
-//   //   type: Number,
-//   //   required: true
-//   // },
-//   // type: {
-//   //   type: String,
-//   //   required: true
-//   // },
-//   // location: {
-//   //   type: String,
-//   //   required: true
-//   // },
-//   // realEstate: {
-//   //   type: String,
-//   //   required: true
-//   // },
-//   // listing_url: {}
-// })
 
 export const postSchema = mongoose.Schema({
 	title: {
@@ -112,8 +72,9 @@ export const houseSchema = mongoose.Schema({
 		required: true,
 	},
 	realEstate: {
-		type: String,
-		required: true,
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'RealEstate',
+		required: true
 	},
 	lat: {
 		type: Number,

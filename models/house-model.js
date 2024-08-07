@@ -1,11 +1,10 @@
 import mongoose from 'mongoose'
 import { houseSchema, postSchema } from '../schemas/houseSchema.js'
-import { userSchema } from '../schemas/userSchema.js'
+//import { userSchema } from '../schemas/userSchema.js'
 
 // este House, luego se hace minusculas y se transforma en plural
 export const HouseModel = mongoose.model('House', houseSchema)
-export const UserModel = mongoose.model('User', userSchema)
-export const postModel = mongoose.model('Post', postSchema, 'posts')
+export const PostModel = mongoose.model('Post', postSchema, 'posts')
 // Modelo, es mi objeto que tiene todos los metodos para yo poder ejecturar cosas de mongo, CRUD
 
 // Ejemplo de modelo para post en base de datos

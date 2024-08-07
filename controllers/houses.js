@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { fetchCoordinates } from '../utils/fetchCoordinates.js';
 
 
+
 //export const getAllHouses = async (req, res) => {
 //  try {
 //    const page = parseInt(req.query.page) || 1;
@@ -32,26 +33,29 @@ import { fetchCoordinates } from '../utils/fetchCoordinates.js';
 
 export const getAllHouses = async (req, res) => {
 	try {
-		const houses = await HouseModel.find({}).sort({ date: -1 });
-		console.log('GET ALL', houses)
+		const houses = await HouseModel.find({}).sort({ date: -1 }).populate('realEstate');
+		console.log('GET ALL', houses);
 		if (houses.length === 0) {
-			return res.status(204).json([])
+			return res.status(204).json([]); // 204 No Content
 		}
-		res.json(houses)
+		res.json(houses);
 	} catch (error) {
-		res.status(500).json({ message: error.message })
+		res.status(500).json({ message: error.message });
 	}
-}
+};
 
 export const getHouseByPermalink = async (req, res, next) => {
-	const { permalink } = req.params
+	const { permalink } = req.params;
 	try {
-		const house = await HouseModel.findOne({ permalink })
-		res.status(200).json(house)
+		const house = await HouseModel.findOne({ permalink }).populate('realEstate');
+		if (!house) {
+			return res.status(404).json({ message: 'Casa no encontrada' });
+		}
+		res.status(200).json(house);
 	} catch (err) {
-		next(err)
+		next(err);
 	}
-}
+};
 
 //export const postHouse = async (req, res) => {
 //	const { title, address, location, type, realEstate, price, description, houseImage, dimention } = req.body;
@@ -112,65 +116,119 @@ export const getHouseByPermalink = async (req, res, next) => {
 // controllers/housesController.js
 
 export const postHouse = async (req, res) => {
-	try {
-		const uuid = uuidv4();
-		const permalink = uuid.slice(0, 8);
-		const date = new Date().toISOString();
-		const { address, location, state = 'Entre Rios', ...rest } = req.body;
 
-		// Obtener las coordenadas de Nominatim
-		const coordinates = await fetchCoordinates(address, location, state);
-
-		const houseToSave = {
-			...rest,
-			address,
-			location,
-			date,
-			permalink,
-			...(coordinates && { lat: coordinates.lat, lon: coordinates.lon })
-		};
-
-		const createdPost = await HouseModel.create(houseToSave);
-		res.status(201).send(createdPost);
-	} catch (error) {
-		res.status(400).json({
-			message: error.message
+	console.log('Archivo recibido:', req.file);
+	console.log('URL de Cloudinary:', req.file.cloudinaryUrl);
+	if (req.file && req.file.cloudinaryUrl) {
+		res.json({
+			message: 'Archivo subido a Cloudinary correctamente',
+			cloudinaryUrl: req.file.cloudinaryUrl
 		});
-		console.error(error);
-	}
-};
+	};
+	//try {
+	//	console.log('Body:', req.body);
+	//	console.log('File:', req.file);
 
+	//	//const uuid = uuidv4();
+	//	//const permalink = uuid.slice(0, 8);
+	//	//const date = new Date().toISOString();
+	//	//const { address, location, state = 'Entre Rios', ...rest } = req.body;
+
+	//	//// Obtener las coordenadas de Nominatim
+	//	//const coordinates = await fetchCoordinates(address, location, state);
+
+	//	//// Manejar la imagen
+	//	//let houseImage;
+	//	//if (req.file && req.file.cloudinaryUrl) {
+	//	//	houseImage = req.file.cloudinaryUrl;
+	//	//}
+
+	//	//const houseToSave = {
+	//	//	...rest,
+	//	//	address,
+	//	//	location,
+	//	//	state,
+	//	//	date,
+	//	//	permalink,
+	//	//	houseImage: houseImage || null, // Usar la URL de Cloudinary
+	//	//	...(coordinates && { lat: coordinates.lat, lon: coordinates.lon })
+	//	//};
+	//	//console.log(houseToSave)
+	//	//const createdHouse = await HouseModel.create(houseToSave);
+	//	res.status(200).json({ message: 'Datos recibidos' });
+	//	//res.status(201).json(createdHouse);
+	//} catch (error) {
+	//	console.error('Error al crear la casa:', error);
+	//	res.status(400).json({
+	//		message: 'Error al crear la casa',
+	//		error: error.message
+	//	});
+}
+
+//export const updateHouse = async (req, res) => {
+//	try {
+//		const { permalink } = req.params;
+//		const { price, title, address, description, houseImage, dimention, type, location, realEstate } = req.body;
+//		const date = new Date().toISOString();
+//		const state = 'Entre Rios';
+
+//		// Obtener las coordenadas de Nominatim
+//		const coordinates = await fetchCoordinates(address, location, state);
+
+//		const newHouse = {
+//			price,
+//			title,
+//			address,
+//			date,
+//			description,
+//			houseImage,
+//			dimention,
+//			type,
+//			location,
+//			realEstate,
+//			...(coordinates && { lat: coordinates.lat, lon: coordinates.lon })
+//		};
+
+//		const opts = { new: true };
+//		const updatedHouse = await HouseModel.findOneAndUpdate({ permalink }, newHouse, opts);
+//		res.status(200).json({ updatedHouse });
+//	} catch (err) {
+//		console.error(err);
+//		res.status(500).json({ message: 'Error al actualizar la casa' });
+//	}
+//};
 
 export const updateHouse = async (req, res) => {
 	try {
 		const { permalink } = req.params;
-		const { price, title, address, description, houseImage, dimention, type, location, realEstate } = req.body;
+		const { address, location, state = 'Entre Rios', ...rest } = req.body;
 		const date = new Date().toISOString();
-		const state = 'Entre Rios';
 
 		// Obtener las coordenadas de Nominatim
 		const coordinates = await fetchCoordinates(address, location, state);
 
-		const newHouse = {
-			price,
-			title,
+		// Manejar la imagen
+		let houseImage;
+		if (req.file && req.file.cloudinaryUrl) {
+			houseImage = req.file.cloudinaryUrl;
+		}
+
+		const houseToUpdate = {
+			...rest,
 			address,
-			date,
-			description,
-			houseImage,
-			dimention,
-			type,
 			location,
-			realEstate,
+			state,
+			date,
+			...(houseImage && { houseImage }), // Solo añadir houseImage si existe
 			...(coordinates && { lat: coordinates.lat, lon: coordinates.lon })
 		};
 
 		const opts = { new: true };
-		const updatedHouse = await HouseModel.findOneAndUpdate({ permalink }, newHouse, opts);
+		const updatedHouse = await HouseModel.findOneAndUpdate({ permalink }, houseToUpdate, opts);
 		res.status(200).json({ updatedHouse });
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({ message: 'Error al actualizar la casa' });
+		console.error('Error al actualizar la casa:', err);
+		res.status(500).json({ message: 'Error al actualizar la casa', error: err.message });
 	}
 };
 

@@ -1,10 +1,13 @@
 import express from 'express'
 // import mongoose from 'mongoose'
-
-import {getAllHouses, getHouseByPermalink, postHouse, updateHouse, deleteHouse, getTypesRealEstate, getRealEstates, getLocations} from '../controllers/houses.js'
-
+import { getAllHouses, getHouseByPermalink, postHouse, updateHouse, deleteHouse, getTypesRealEstate, getRealEstates, getLocations } from '../controllers/houses.js'
 export const houseRouter = express.Router()
+import upload from '../middlewares/multerConfig.js';
+//import uploadToCloudinary from '../middlewares/cloudinaryMiddleware';
 
+
+//import multer from 'multer';
+//const upload = multer({ dest: '../uploads/' })
 // export const postRouter = express.Router()
 // CRUD: create,read,update,delete
 
@@ -50,10 +53,10 @@ houseRouter.get('/', getAllHouses)
 houseRouter.get('/:permalink', getHouseByPermalink)
 
 // POST
-houseRouter.post('/', postHouse)
+houseRouter.post('/', upload.single('houseImage'), postHouse)
 
 // Update
-houseRouter.patch('/:permalink', updateHouse)
+//houseRouter.patch('/:permalink', upload.single('houseImage'), uploadToCloudinary, updateHouse)
 
 // Delete
 houseRouter.delete('/:permalink', deleteHouse)
